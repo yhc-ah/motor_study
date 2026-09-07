@@ -14,12 +14,15 @@ static CommandDispatcher s_dispatcher;
 static uint32_t s_pause_deadline;
 static uint8_t s_pause_active;
 
+volatile uint32_t app_uart_pause_request_ms;
+
 void APP_UART_Init(void)
 {
     FrameParser_Init(&s_parser);
     CommandDispatcher_Init(&s_dispatcher, &s_parser);
     s_pause_deadline = 0U;
     s_pause_active = 0U;
+    app_uart_pause_request_ms = 0U;
 }
 
 void APP_UART_PauseConsumer(uint32_t duration_ms)
@@ -35,6 +38,12 @@ void APP_UART_Run(void)
     uint32_t processed = 0U;
     uint32_t i;
     uint32_t now = HAL_GetTick();
+    uint32_t pause_request = app_uart_pause_request_ms;
+
+    if (pause_request != 0U) {
+        app_uart_pause_request_ms = 0U;
+        APP_UART_PauseConsumer(pause_request);
+    }
 
     BSP_UART_Service();
 
