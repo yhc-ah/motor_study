@@ -18,12 +18,14 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "app_task.h"
 #include "app_memory.h"
+#include "bsp_uart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -86,9 +88,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-	APP_Task_Init();
-	APP_MemoryProbe();
+  APP_Task_Init();
+  APP_MemoryProbe();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -98,7 +101,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		APP_Task_Run();
+    BSP_UART_PollingEchoTask();
+    APP_Task_Run();
   }
   /* USER CODE END 3 */
 }

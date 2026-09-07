@@ -62,7 +62,7 @@ void Error_Handler(void);
 #define KEY1_Pin GPIO_PIN_0
 #define KEY1_GPIO_Port GPIOA
 #define KEY1_EXTI_IRQn EXTI0_IRQn
-#define TEST_OUT_Pin GPIO_PIN_9
+#define TEST_OUT_Pin GPIO_PIN_1
 #define TEST_OUT_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
