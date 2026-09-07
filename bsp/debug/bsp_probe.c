@@ -24,3 +24,13 @@ void BSP_Probe_Toggle(void)
 {
     HAL_GPIO_TogglePin(TEST_OUT_GPIO_Port, TEST_OUT_Pin);
 }
+
+void BSP_UART_ProbeHigh(void)
+{
+    TEST_OUT_GPIO_Port->BSRR = TEST_OUT_Pin;
+}
+
+void BSP_UART_ProbeLow(void)
+{
+    TEST_OUT_GPIO_Port->BSRR = ((uint32_t)TEST_OUT_Pin << 16U);
+}

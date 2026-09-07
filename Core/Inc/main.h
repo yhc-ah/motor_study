@@ -66,6 +66,8 @@ void Error_Handler(void);
 #define TEST_OUT_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
+#define UART_CB_PROBE_Pin TEST_OUT_Pin
+#define UART_CB_PROBE_GPIO_Port TEST_OUT_GPIO_Port
 
 /* USER CODE END Private defines */
 

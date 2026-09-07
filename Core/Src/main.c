@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -46,6 +47,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+static uint8_t uart_echo_buffer[64];
 
 /* USER CODE END PV */
 
@@ -88,10 +90,16 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   APP_Task_Init();
   APP_MemoryProbe();
+  BSP_UART_Init();
+  if (BSP_UART_StartRxDMA() != HAL_OK)
+  {
+    Error_Handler();
+  }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -101,7 +109,18 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    BSP_UART_PollingEchoTask();
+    uint32_t echo_length;
+
+    BSP_UART_Service();
+    echo_length = ByteRing_Read(&g_uart_rx_ring,
+                                uart_echo_buffer,
+                                sizeof(uart_echo_buffer));
+    if (echo_length != 0U)
+    {
+      (void)BSP_UART_SendBlocking(uart_echo_buffer,
+                                  (uint16_t)echo_length,
+                                  100U);
+    }
     APP_Task_Run();
   }
   /* USER CODE END 3 */
