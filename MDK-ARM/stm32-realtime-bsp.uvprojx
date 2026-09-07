@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../bsp/led;../bsp/key;../bsp/debug;../app;../bsp/uart;../protocol/ring</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../bsp/led;../bsp/key;../bsp/debug;../app;../bsp/uart;../protocol/ring;../protocol/crc;../protocol/frame;../protocol/parser</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -666,6 +666,16 @@
               <FileType>1</FileType>
               <FilePath>..\app\app_task.c</FilePath>
             </File>
+            <File>
+              <FileName>app_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\app_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>command_dispatch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\command_dispatch.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -685,6 +695,36 @@
               <FileName>byte_ring.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\protocol\ring\byte_ring.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>PROTOCOL_CRC</GroupName>
+          <Files>
+            <File>
+              <FileName>crc16_modbus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\protocol\crc\crc16_modbus.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>PROTOCOL_FRAME</GroupName>
+          <Files>
+            <File>
+              <FileName>frame_codec.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\protocol\frame\frame_codec.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>PROTOCOL_PARSER</GroupName>
+          <Files>
+            <File>
+              <FileName>frame_parser.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\protocol\parser\frame_parser.c</FilePath>
             </File>
           </Files>
         </Group>

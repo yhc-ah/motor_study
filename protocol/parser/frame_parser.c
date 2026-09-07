@@ -44,9 +44,8 @@ void FrameParser_PushByte(FrameParser *parser,
                           FrameHandler handler,
                           void *context)
 {
-    uint8_t crc_input[2U + FRAME_MAX_LEN];
+    uint8_t length_bytes[2];
     uint16_t calculated_crc;
-    uint16_t i;
     ParsedFrame frame;
 
     if (parser == NULL) {
@@ -109,13 +108,14 @@ void FrameParser_PushByte(FrameParser *parser,
     case FRAME_READ_CRC_HI:
         parser->received_crc |= (uint16_t)((uint16_t)byte << 8U);
         parser->last_byte_tick = now_ms;
-        crc_input[0] = (uint8_t)(parser->body_length & 0xFFU);
-        crc_input[1] = (uint8_t)(parser->body_length >> 8U);
-        for (i = 0U; i < parser->body_length; ++i) {
-            crc_input[2U + i] = parser->body[i];
-        }
-        calculated_crc = CRC16_Modbus(crc_input,
-                                      (uint32_t)(2U + parser->body_length));
+        length_bytes[0] = (uint8_t)(parser->body_length & 0xFFU);
+        length_bytes[1] = (uint8_t)(parser->body_length >> 8U);
+        calculated_crc = CRC16_ModbusUpdate(0xFFFFU,
+                                            length_bytes,
+                                            sizeof(length_bytes));
+        calculated_crc = CRC16_ModbusUpdate(calculated_crc,
+                                            parser->body,
+                                            parser->body_length);
 
         if (calculated_crc == parser->received_crc) {
             parser->stats.valid_frames++;

@@ -13,6 +13,9 @@ int main(void)
     assert(CRC16_Modbus(NULL, 0U) == 0xFFFFU);
     assert(CRC16_Modbus(NULL, 1U) == 0xFFFFU);
     assert(CRC16_Modbus(vector, sizeof(vector)) == 0x4B37U);
+    assert(CRC16_ModbusUpdate(
+               CRC16_ModbusUpdate(0xFFFFU, vector, 4U),
+               &vector[4], sizeof(vector) - 4U) == 0x4B37U);
     puts("test_crc16: PASS");
     return 0;
 }

@@ -2,9 +2,10 @@
 
 #include <stddef.h>
 
-uint16_t CRC16_Modbus(const uint8_t *data, uint32_t length)
+uint16_t CRC16_ModbusUpdate(uint16_t crc,
+                            const uint8_t *data,
+                            uint32_t length)
 {
-    uint16_t crc = 0xFFFFU;
     uint32_t i;
     uint32_t bit;
 
@@ -24,4 +25,9 @@ uint16_t CRC16_Modbus(const uint8_t *data, uint32_t length)
     }
 
     return crc;
+}
+
+uint16_t CRC16_Modbus(const uint8_t *data, uint32_t length)
+{
+    return CRC16_ModbusUpdate(0xFFFFU, data, length);
 }

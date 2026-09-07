@@ -26,6 +26,7 @@
 /* USER CODE BEGIN Includes */
 #include "app_task.h"
 #include "app_memory.h"
+#include "app_uart.h"
 #include "bsp_uart.h"
 /* USER CODE END Includes */
 
@@ -47,7 +48,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-static uint8_t uart_echo_buffer[64];
 
 /* USER CODE END PV */
 
@@ -96,6 +96,7 @@ int main(void)
   APP_Task_Init();
   APP_MemoryProbe();
   BSP_UART_Init();
+  APP_UART_Init();
   if (BSP_UART_StartRxDMA() != HAL_OK)
   {
     Error_Handler();
@@ -109,19 +110,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    uint32_t echo_length;
-
-    BSP_UART_Service();
-    echo_length = ByteRing_Read(&g_uart_rx_ring,
-                                uart_echo_buffer,
-                                sizeof(uart_echo_buffer));
-    if (echo_length != 0U)
-    {
-      (void)BSP_UART_SendBlocking(uart_echo_buffer,
-                                  (uint16_t)echo_length,
-                                  100U);
-    }
     APP_Task_Run();
+    APP_UART_Run();
   }
   /* USER CODE END 3 */
 }
