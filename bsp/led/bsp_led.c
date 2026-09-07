@@ -8,7 +8,7 @@ void BSP_LED_Init(void)
 
 void BSP_LED_On(void)
 {
-    /* °ÔÌì»¢ LED µÍµçÆ½µãÁÁ */
+    /* éœ¸å¤©è™Ž LED ä½Žç”µå¹³ç‚¹äº® */
     HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, GPIO_PIN_RESET);
 }
 
