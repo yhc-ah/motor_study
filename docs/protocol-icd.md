@@ -73,3 +73,51 @@ All fields are unsigned 32-bit little-endian integers.
 Counters wrap naturally at `UINT32_MAX`. The software ring uses a drop-new
 overflow policy: unread data is never overwritten; overflow and dropped-byte
 counters increase and the parser is reset in the main loop.
+
+## Week03 extension (week3 branch only)
+
+Transport is4608008N1. Existing commands/layout/CRC remain compatible; every
+response now enters a copied foreground TX queue and DMA sends immutable slots.
+Blue LED is reserved for the500ms heartbeat in this branch.
+
+| Request | Payload | Reply |
+|---|---|---|
+|0x10|one byte0/1: stop/start streaming|0x90 echoes byte; invalid or start duringFlash test returns0xFF [2,command]|
+|0x11|empty|0x91,128bytes,32u32 little-endian fields below|
+|0x12|ASCII W3OK|0x92,i32 result:0 accepted,-1 malformed,-2 active/streaming,-3 unconfigured reserve,othernegative drivererror|
+
+Flash command operates only inside compile-time explicitly configured reserved
+range. No PC address or implicit boot erase. Streaming and the100-round Flash
+self-test are mutually exclusive. A0 frames are emitted only when streaming.
+0x91 also emits once per second while streaming, using sequence0 (unsolicited).
+
+0xA0 uses successfulsample counter as headerSEQ, payload30bytes `III7hHH` LE:
+`time_us, drdy_count, read_duration_us, ax, ay, az, temp, gx, gy, gz, flags, reserved`.
+flags bit0valid, bit1INTtimestampused, bit2deadline/eventgapdetected. Otherbits0.
+Units are rawcounts; see setup for scale. Defaultpolling timestamp is readstart,
+not measured sensorconversion time. A sample can be valid yet carry timinggap.
+SEQ runs while streamoff; only in-stream gaps identify upload loss. It does not
+count unseen sensoroverwrites. No fictitious backfilled samples.
+
+0x91 fields, sequential4byte offsets:
+
+```text
+uptime_ms, samples, imu_errors, imu_recoveries, imu_valid, imu_age_ms,
+bus_errors, bus_recoveries, bus_recovery_failures, max_bus_us,
+max_response_us, deadline_misses, drdy_events, drdy_missed,
+tx_dropped, tx_errors, tx_queued, tx_high_watermark,
+flash_id, flash_result, flash_rounds, flash_mismatches, flash_active,
+stream_enabled, capabilities, th_valid, th_errors, th_samples, th_age_ms,
+flash_cross_page_rounds, flash_elapsed_ms, flash_first_mismatch
+```
+
+flash_result is signedi32 encoded in itsu32slot. Age=0xFFFFFFFF means no sample.
+capabilities bits:0configuredPC4INT,1THprofile,2LCDadapter,3configuredFlashreserve.
+Current bits1/2 are0; corresponding real hardware implementations are absent.
+Capability does not certify physicalconnection/measurement. drdy_missed in
+pollingmode is0 byconstruction and must not be taken as zero physicalmiss proof.
+deadline_misses counts threshold events, not exact number of missing samples.
+
+0xA1 payload `IiiII` (`time_ms,temp_mC,rh_milli_percent,sample_count,valid`) is
+reserved in the PCdecoder for a future confirmedTHdriver; current firmware
+does not emit it. GET_STATS remains its original84byte layout.

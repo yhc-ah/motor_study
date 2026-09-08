@@ -18,6 +18,10 @@ MDK-ARM/Listings/
 *.lst
 *.lnp
 *.build_log.htm
+*.__i
+*._ia
+**/__pycache__/
+tools/sensor_test/captures/
 MDK-ARM/*-build.log
 tests/host/*.exe
 tests/host/__pycache__/

@@ -22,6 +22,7 @@ typedef struct {
 extern ByteRing g_uart_rx_ring;
 
 const BspUartStats *BSP_UART_GetStats(void);
+HAL_StatusTypeDef BSP_UART_SendQueued(const uint8_t *data,uint16_t length);
 HAL_StatusTypeDef BSP_UART_SendBlocking(const uint8_t *data,
                                         uint16_t length,
                                         uint32_t timeout_ms);

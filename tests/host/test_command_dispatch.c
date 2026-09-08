@@ -46,11 +46,9 @@ const BspUartStats *BSP_UART_GetStats(void)
     return &s_uart_stats;
 }
 
-HAL_StatusTypeDef BSP_UART_SendBlocking(const uint8_t *data,
-                                        uint16_t length,
-                                        uint32_t timeout_ms)
+HAL_StatusTypeDef BSP_UART_SendQueued(const uint8_t *data,
+                                        uint16_t length)
 {
-    (void)timeout_ms;
     assert(length <= sizeof(s_tx));
     memcpy(s_tx, data, length);
     s_tx_length = length;

@@ -1,5 +1,26 @@
 # STM32F407 real-time BSP experiments
 
+## Week 03 — current branch
+
+**Software implementation available; full week03 hardware acceptance is still pending.**
+This branch includes week2 plus MPU6050 initialization/raw sampling/recovery,
+I2C/SPI/TIM2 board support, queued UART TX DMA at 460800 baud, restricted cooperative
+NOR self-test, and PC raw capture/statistics/SVG tools. Actual temperature/humidity
+and LCD drivers remain unimplemented until their exact hardware is supplied.
+No hardware measurements or week-03-pass tag are claimed.
+
+- [Third-week setup and remaining prerequisites](docs/week-03-setup.md)
+- [Third-week verification record](docs/week-03-test.md)
+- [PC capture / calibration / explicit Flash command](tools/sensor_test/README.md)
+- [Flash driver interface](device/spi_flash/README.md)
+
+Build the committed Keil project directly. Run `./tests/host/run_week3_tests.ps1`
+for old and new host tests. Flash reserved size defaults to 0, so boot only reads
+ID and the destructive test is disabled. Streaming defaults off. The defaults
+below describe the inherited **week2** firmware; use `--baud 460800` for its PC
+tools against **week3**. Pin/profile details and CubeMX regeneration notes are in
+the third-week setup guide.
+
 STM32CubeMX + Keil MDK project for the EmbedFire/Wildfire Batianhu V2 board
 with an STM32F407ZGTx. The `week1` branch contains the first-week GPIO, EXTI,
 timing, and memory exercises. The `week2` branch adds a measured UART receive

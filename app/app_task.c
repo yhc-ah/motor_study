@@ -86,6 +86,7 @@ static void APP_KeyTask(uint32_t now)
     }
 }
 
+#endif
 void APP_Task_Run(void)
 {
     uint32_t now = HAL_GetTick();
@@ -98,4 +99,3 @@ void APP_Task_Run(void)
 #error "Invalid APP_MODE"
 #endif
 }
-#endif

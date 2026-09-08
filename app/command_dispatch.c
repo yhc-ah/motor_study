@@ -6,6 +6,10 @@
 #include "frame_codec.h"
 #include "stm32f4xx_hal.h"
 #include <stddef.h>
+#ifndef COMMAND_DISPATCH_HOST_TEST
+#include "app_sensors.h"
+#include "bsp_uart_tx.h"
+#endif
 
 static uint8_t s_tx_buffer[FRAME_MAX_ENCODED_SIZE];
 
@@ -29,9 +33,7 @@ static void SendFrame(CommandDispatcher *dispatcher,
                                   payload_length, s_tx_buffer,
                                   (uint16_t)sizeof(s_tx_buffer));
     if ((encoded_length == 0U) ||
-        (BSP_UART_SendBlocking(s_tx_buffer,
-                               encoded_length,
-                               100U) != HAL_OK)) {
+        (BSP_UART_SendQueued(s_tx_buffer, encoded_length) != HAL_OK)) {
         dispatcher->stats.tx_error_count++;
     }
 }
@@ -115,6 +117,9 @@ void CommandDispatcher_Handle(const ParsedFrame *frame, void *context)
     if ((frame == NULL) || (dispatcher == NULL)) {
         return;
     }
+#ifndef COMMAND_DISPATCH_HOST_TEST
+    if (APP_Sensors_Command(frame)) { return; }
+#endif
 
     switch (frame->command) {
     case CMD_PING:

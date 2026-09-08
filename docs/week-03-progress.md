@@ -1,0 +1,7 @@
+# Week 03 progress
+
+2026-09-08: Found actual source directory E:/motor_prj/stm32-realtime-bsp. Original is on week2 with three locally modified Keil session/build files. Created separate week3 worktree, merged origin/week2 with README conflict resolved by retaining week2 guide and saving week1 text. Baseline C and Python host tests passed. Compiler located under E:/ProgramFileForSTM32/keil5/core. Hardware profile requested; no hardware acceptance claimed.
+
+2026-09-08: Implemented and reviewed MPU6050 state machine, bounded I2C recovery, restricted SPI NOR driver/self-test, TIM2 timestamps, stable UART TX DMA queue, sample/status/command integration, PC capture and independent gyro-bias analysis. Fixed review findings concerning DMA abort ownership, long-uptime deadlines, duplicate/out-of-order accounting and calibration coverage. Final host validation: 9 C programs, 18 Python tests and UART self-test pass. Final Keil build: 0 errors, 0 warnings. Repeated project synchronization is stable; all 48 project source references exist.
+
+Remaining: actual temperature/humidity and LCD implementations await exact hardware profiles; the board, INT wiring and reserved Flash region were not available for confirmation. No physical 500 Hz, Flash endurance, calibration, recovery or 600-second joint-run result is claimed. See week-03-setup.md for execution steps and week-03-test.md for evidence. Push result is reported to the user after remote SHA verification.

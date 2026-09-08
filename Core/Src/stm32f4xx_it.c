@@ -23,6 +23,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "bsp_uart.h"
+#include "usart.h"
+#include "bsp_sensors.h"
+#include "week3_config.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -205,9 +208,12 @@ void SysTick_Handler(void)
 void DMA2_Stream2_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream2_IRQn 0 */
-
+  if (hdma_usart1_rx.Instance == DMA2_Stream2) {
+    BSP_UART_DMA_IRQHandler();
+    return;
+  }
   /* USER CODE END DMA2_Stream2_IRQn 0 */
-  BSP_UART_DMA_IRQHandler();
+  HAL_DMA_IRQHandler(&hdma_usart1_rx);
   /* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
 
   /* USER CODE END DMA2_Stream2_IRQn 1 */
@@ -233,14 +239,22 @@ void EXTI0_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-
+  if (huart1.Instance == USART1) {
+    BSP_UART_USART_IRQHandler();
+    return;
+  }
   /* USER CODE END USART1_IRQn 0 */
-  BSP_UART_USART_IRQHandler();
+  HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
 
   /* USER CODE END USART1_IRQn 1 */
 }
 
+void DMA2_Stream7_IRQHandler(void) { HAL_DMA_IRQHandler(&hdma_usart1_tx); }
+
 /* USER CODE BEGIN 1 */
+#if WEEK3_MPU_PC4_INT
+void EXTI4_IRQHandler(void) { HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4); }
+#endif
 
 /* USER CODE END 1 */

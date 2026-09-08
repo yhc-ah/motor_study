@@ -1,6 +1,8 @@
 #include "bsp_key.h"
 #include "bsp_probe.h"
 #include "main.h"
+#include "bsp_sensors.h"
+#include "week3_config.h"
 
 volatile uint32_t key_irq_count = 0U;
 
@@ -16,6 +18,9 @@ bool BSP_Key_IsPressed(void)
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+#if WEEK3_MPU_PC4_INT
+    if (GPIO_Pin == GPIO_PIN_4) { BSP_ImuIRQ(); return; }
+#endif
     /*
      * 测试脚只包围回调函数内的处理。
      * 不能在这里打印、延时或处理 LED 业务。
