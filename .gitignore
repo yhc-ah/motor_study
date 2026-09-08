@@ -18,6 +18,9 @@ MDK-ARM/Listings/
 *.lst
 *.lnp
 *.build_log.htm
+MDK-ARM/*-build.log
+tests/host/*.exe
+tests/host/__pycache__/
 
 # Keil user/session files
 *.uvguix.*
@@ -34,3 +37,11 @@ MDK-ARM/Listings/
 .idea/
 Thumbs.db
 .DS_Store
+
+# UART host test outputs
+tools/uart_test/.venv/
+tools/uart_test/*.jsonl
+tools/uart_test/__pycache__/
+
+# Preserve but hide an accidental local Git-output capture from week 01
+/e --short week-01-pass

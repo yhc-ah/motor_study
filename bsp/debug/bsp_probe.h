@@ -5,5 +5,7 @@ void BSP_Probe_Init(void);
 void BSP_Probe_High(void);
 void BSP_Probe_Low(void);
 void BSP_Probe_Toggle(void);
+void BSP_UART_ProbeHigh(void);
+void BSP_UART_ProbeLow(void);
 
 #endif

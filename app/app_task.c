@@ -13,11 +13,13 @@
 
 #define BLINK_HALF_PERIOD_MS (500U / APP_BLINK_HZ)
 
+#if APP_MODE == APP_MODE_BLINK
 static uint32_t s_last_blink_tick;
-
+#elif APP_MODE == APP_MODE_KEY
 static uint32_t s_seen_irq_count;
 static uint32_t s_debounce_start;
 static uint8_t  s_debounce_pending;
+#endif
 
 volatile uint32_t app_key_press_count;
 
@@ -26,22 +28,25 @@ void APP_Task_Init(void)
     BSP_LED_Init();
     BSP_Probe_Init();
 
+#if APP_MODE == APP_MODE_BLINK
     s_last_blink_tick = HAL_GetTick();
-
+#elif APP_MODE == APP_MODE_KEY
     s_seen_irq_count = key_irq_count;
     s_debounce_start = 0U;
     s_debounce_pending = 0U;
+#endif
     app_key_press_count = 0U;
 }
 
+#if APP_MODE == APP_MODE_BLINK
 static void APP_BlinkTask(uint32_t now)
 {
     if ((uint32_t)(now - s_last_blink_tick) >=
         BLINK_HALF_PERIOD_MS)
     {
         /*
-         * 使用 += 而不是直接赋值 now，可减少长期累计漂移。
-         * 前提是主循环始终足够快。
+         * 浣跨敤 += 鑰屼笉鏄洿鎺ヨ祴鍊?now锛屽彲鍑忓皯闀挎湡绱婕傜Щ銆?
+         * 鍓嶆彁鏄富寰幆濮嬬粓瓒冲蹇€?
          */
         s_last_blink_tick += BLINK_HALF_PERIOD_MS;
 
@@ -49,14 +54,16 @@ static void APP_BlinkTask(uint32_t now)
         BSP_Probe_Toggle();
     }
 }
+#endif
 
+#if APP_MODE == APP_MODE_KEY
 static void APP_KeyTask(uint32_t now)
 {
     uint32_t irq_snapshot = key_irq_count;
 
     /*
-     * 收到新的中断后开始/重新开始消抖计时。
-     * 若抖动产生多个上升沿，计时会从最后一次边沿重新开始。
+     * 鏀跺埌鏂扮殑涓柇鍚庡紑濮?閲嶆柊寮€濮嬫秷鎶栬鏃躲€?
+     * 鑻ユ姈鍔ㄤ骇鐢熷涓笂鍗囨部锛岃鏃朵細浠庢渶鍚庝竴娆¤竟娌块噸鏂板紑濮嬨€?
      */
     if (irq_snapshot != s_seen_irq_count)
     {
@@ -91,3 +98,4 @@ void APP_Task_Run(void)
 #error "Invalid APP_MODE"
 #endif
 }
+#endif

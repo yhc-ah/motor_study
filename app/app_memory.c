@@ -15,8 +15,8 @@ void APP_MemoryProbe(void)
     uint32_t tick = HAL_GetTick();
 
     /*
-     * volatile Ö¸ÕëÓÃÓÚ·ÀÖ¹ Release ÓÅ»¯Ê±£¬
-     * ±àÒëÆ÷°ÑÕû¸öÊµÑé±äÁ¿É¾³ı»ò³£Á¿ÕÛµş¡£
+     * volatile æŒ‡é’ˆç”¨äºé˜²æ­¢ Release ä¼˜åŒ–æ—¶ï¼Œ
+     * ç¼–è¯‘å™¨æŠŠæ•´ä¸ªå®éªŒå˜é‡åˆ é™¤æˆ–å¸¸é‡æŠ˜å ã€‚
      */
     volatile const uint8_t *flash_ptr = flash_table;
     volatile uint8_t *data_ptr = init_data;
