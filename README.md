@@ -1,6 +1,21 @@
 # STM32F407 real-time BSP experiments
 
-## Week 03 — current branch
+## Week 04 — current branch
+
+Fourth-week firmware and PC tools: hardware PWM (edge/center), finite quadrature
+generator and encoder counting, 1 kHz timer-triggered ADC DMA with checked buffer
+handover and terminal samples, consumer-pause fault injection, raw recording and
+same-source low-pass analysis. Default is an idle laboratory mode at 460800 baud;
+week3 sensor tasks are disabled in this build profile. Weeks 1–3 remain preserved.
+
+Start with the [Chinese week4 operating guide](docs/week-04/README.md),
+[wiring](docs/week-04/pinmap.md), [PC commands](tools/week4_test/README.md), and
+[verification record](docs/week-04/week-04-test.md).
+Run `./tests/host/run_week4_tests.ps1` for software checks. Physical waveforms,
+voltage measurements and 60/600-second hardware runs remain NOT RUN; no hardware
+pass tag or fabricated experimental results are included.
+
+## Week 03 — inherited reference
 
 **Software implementation available; full week03 hardware acceptance is still pending.**
 This branch includes week2 plus MPU6050 initialization/raw sampling/recovery,

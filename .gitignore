@@ -22,6 +22,12 @@ MDK-ARM/Listings/
 *._ia
 **/__pycache__/
 tools/sensor_test/captures/
+/results/
+/artifacts/
+/week4-record/
+/week4-poll/
+/week4-encoder/
+/week4-step/
 MDK-ARM/*-build.log
 tests/host/*.exe
 tests/host/__pycache__/

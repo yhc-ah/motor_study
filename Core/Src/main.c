@@ -34,6 +34,8 @@
 #include "i2c.h"
 #include "spi.h"
 #include "tim.h"
+#include "week4_config.h"
+#include "app_week4.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -108,7 +110,11 @@ int main(void)
   APP_UART_Init();
   BSP_UART_TxInit();
   BSP_Sensors_Init();
+#if APP_WEEK4
+  APP_Week4_Init();
+#else
   APP_Sensors_Init();
+#endif
   if (BSP_UART_StartRxDMA() != HAL_OK)
   {
     Error_Handler();
@@ -123,7 +129,11 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     APP_Task_Run();
+#if APP_WEEK4
+    APP_Week4_Run();
+#else
     APP_Sensors_Run();
+#endif
     APP_UART_Run();
   }
   /* USER CODE END 3 */

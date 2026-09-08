@@ -7,13 +7,13 @@ Architecture: foreground command/processing tasks, hardware PWM/encoder/ADC trig
 Tech stack: STM32F407ZG, HAL, ARMCC5, GCC host tests, Python standard library plus pyserial.
 
 - [x] Inspect remote/local branches, preserve original local edits, create sibling week4 worktree and fast-forward week3; baseline tests.
-- [ ] Pure C signal math: PWM edge/center parameters and quantization, 16-bit signed encoder delta/ambiguity, continuous low-pass state. Write failing host assertions, implement, rerun.
-- [ ] Board BSP: TIM4 PB6 PWM, TIM8 PC6/PC7 encoder, TIM6 PG2/PG3 quadrature generator, ADC1 PC0 with TIM3 TRGO 1kHz and DMA2 Stream0, PC2 callback probe, PA6 TIM3_CH1 trigger reference. These are explicit external wiring defaults, not a claim of onboard routing.
-- [ ] ADC ownership: ISR completion sequence/timestamp; foreground validates DMA half, generation and deadline before/after copy; count overwritten blocks. Stop freezes DMA, accounts complete blocks and partial tail. Inject 250ms consumer pause without masking interrupts.
-- [ ] Foreground app and protocol: idle defaults, ADC start/stop/status, PWM static/cycle/stop and center alignment, encoder finite cycles/direction/reset, ADC polling/configuration, controlled fault injection, joint mode. Reuse owned TX queue.
-- [ ] Python client: status, PWM, encoder, poll, record, joint run, fault capture; matching ACKs, raw evidence, exact ADC/block/end counts, CSV and independent filter/step analysis SVG. Unit tests with fragmented/corrupt input and command failure/stop cleanup.
-- [ ] Integrate Keil sources and CubeMX profile; test all old/new host suites and ARMCC build; independent spec and quality review, fix findings.
-- [ ] Chinese wiring/operations/protocol/report; physical results remain NOT RUN until observed. Commit, normal push origin week4, compare remote SHA.
+- [x] Pure C signal math: PWM edge/center parameters and quantization, 16-bit signed encoder delta/ambiguity, continuous low-pass state. Write failing host assertions, implement, rerun.
+- [x] Board BSP: TIM4 PB6 PWM, TIM8 PC6/PC7 encoder, TIM6 PG2/PG3 quadrature generator, ADC1 PC0 with TIM3 TRGO 1kHz and DMA2 Stream0, PC2 callback probe, PA6 TIM3_CH1 trigger reference. These are explicit external wiring defaults, not a claim of onboard routing.
+- [x] ADC ownership: ISR completion sequence/timestamp; foreground validates DMA half, generation and deadline before/after copy; count overwritten blocks. Stop freezes DMA, accounts complete blocks and partial tail. Inject 250ms consumer pause without masking interrupts.
+- [x] Foreground app and protocol: idle defaults, ADC start/stop/status, PWM static/cycle/stop and center alignment, encoder finite cycles/direction/reset, ADC polling/configuration, controlled fault injection, joint mode. Reuse owned TX queue.
+- [x] Python client: status, PWM, encoder, poll, record, joint run, fault capture; matching ACKs, raw evidence, exact ADC/block/end counts, CSV and independent filter/step analysis SVG. Unit tests with fragmented/corrupt input and command failure/stop cleanup.
+- [x] Integrate Keil sources and CubeMX profile; test all old/new host suites and ARMCC build; independent spec and quality review, fix findings.
+- [x] Chinese wiring/operations/protocol/report; physical results remain NOT RUN until observed. Prepare source delivery; push/remote SHA result is reported after delivery.
 
 Protocol v1 (little endian; existing AA55/length/u32 seq/u8 cmd/payload/CRC16 envelope, payload <=240):
 
@@ -25,7 +25,7 @@ Protocol v1 (little endian; existing AA55/length/u32 seq/u8 cmd/payload/CRC16 en
 - 0x26 ADC sampling cycles: u32 84 or480, idle only; reply 0xAE i32.
 - 0x27 ADC single poll: empty, idle only; reply 0xAF `<i I>` result/raw (bounded polling, explicitly distinct from DMA record).
 - 0xB0 ADC block: `<IIIIHH>` run_id, block_seq (0-based), first_sample_seq (0-based), block_done_us, count1..100, flags (bit0 valid, bit1 terminal partial), followed count u16 raw. Outer seq=block_seq. Nominal sample period1000us. Fault gaps advance logical sample index. No reused DMA memory reaches UART.
-- status fields in order: version,uptime_ms,run_id,running,samples_completed,blocks_completed,blocks_sent,samples_sent,overwritten_blocks,copy_races,adc_overruns,dma_errors,tx_dropped,tx_errors,max_consume_us,ht_count,tc_count,tail_samples,encoder_cnt,encoder_position_low(i32),encoder_speed(i32),generator_steps,generator_target,generator_active,pwm_hz,pwm_arr,pwm_ccr,pwm_mode,filter5_milli,filter20_milli,pause_events,hardware_errors. Counters are current run except UART cumulative and encoder/generator/PWM state. Samples_completed includes lost full blocks plus terminal tail, not proof of exact conversion count if DMA IRQ missed. ADC error stops acquisition and invalidates partial data.
+- status fields in order: version,uptime_ms,run_id,running,samples_completed,blocks_completed,blocks_sent,samples_sent,overwritten_blocks,copy_races,adc_overruns,dma_errors,tx_dropped,tx_errors,max_consume_us,ht_count,tc_count,tail_samples,encoder_cnt,encoder_position_low(i32),encoder_speed(i32),generator_steps,generator_target,generator_active,pwm_hz,pwm_arr,pwm_ccr,pwm_mode,filter5_milli,filter20_milli,pause_events,hardware_errors. ADC counters are current run; UART and hardware_errors are cumulative since boot; encoder/generator/PWM state is independent. Samples_completed includes lost full blocks plus terminal tail, not proof of exact conversion count if DMA IRQ missed. ADC error stops acquisition and invalidates partial data.
 
 Host assertion examples: edge84MHz/10kHz -> PSC83 ARR99 CCR50; center -> ARR50 CCR25; wrap65530->4=10; ambiguous32768 rejected; lowpass step63.2% within one sample. Integration should reject malformed commands without hardware mutation and preserve raw bytes on recording failure.
 

@@ -26,6 +26,8 @@
 #include "usart.h"
 #include "bsp_sensors.h"
 #include "week3_config.h"
+#include "week4_config.h"
+#include "bsp_week4.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -253,6 +255,11 @@ void USART1_IRQHandler(void)
 void DMA2_Stream7_IRQHandler(void) { HAL_DMA_IRQHandler(&hdma_usart1_tx); }
 
 /* USER CODE BEGIN 1 */
+#if APP_WEEK4
+void DMA2_Stream0_IRQHandler(void){W4HW_DMA_IRQHandler();}
+void ADC_IRQHandler(void){W4HW_ADC_IRQHandler();}
+void TIM6_DAC_IRQHandler(void){W4HW_GeneratorIRQ();}
+#endif
 #if WEEK3_MPU_PC4_INT
 void EXTI4_IRQHandler(void) { HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4); }
 #endif
