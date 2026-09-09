@@ -1,6 +1,27 @@
 # STM32F407 real-time BSP experiments
 
-## Week 04 — current branch
+## Week 05 — current branch
+
+Week5 adds the F407 integration supervisor, absolute 2 ms IMU scheduling,
+timing/profiling counters, a guarded cooperative Flash journal, a shared-source
+F411 C/C++ port, bounded-memory 30-minute capture and fault tools.
+
+Start with the [week5 quickstart](docs/week-05/quickstart.md),
+[interfaces](docs/week-05/interfaces-and-dependencies.md),
+[timing](docs/week-05/scheduling-and-timing.md),
+[PC tool](tools/week5_test/README.md), and [verification record](docs/week-05/week-05-test.md).
+Run `./tests/host/run_week5_tests.ps1` and `./tools/build_f411.ps1`.
+The default F407 profile is week5 at 460800 baud; ADC/PWM/generator and raw logs
+start only by command. IMU detection runs in the background.
+
+Weeks1–4 are complete according to the user's confirmation and remain on their
+original branches. Historical verification notes below describe those commits.
+Week5 physical acceptance is **not complete**: actual TH/LCD drivers and board
+measurements are not present. Their capability bits default to absent; full
+stage5 is rejected until real adapters and a prepared Flash region are available.
+No fabricated raw data or `week-05-pass` tag is included.
+
+## Week 04 — inherited reference
 
 Fourth-week firmware and PC tools: hardware PWM (edge/center), finite quadrature
 generator and encoder counting, 1 kHz timer-triggered ADC DMA with checked buffer

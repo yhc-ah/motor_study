@@ -5,6 +5,10 @@
 #include "command_dispatch.h"
 #include "frame_parser.h"
 #include "stm32f4xx_hal.h"
+#include "week5_config.h"
+#if APP_WEEK5
+#include "bsp_sensors.h"
+#endif
 
 #define APP_UART_CHUNK_SIZE      64U
 #define APP_UART_BUDGET_PER_RUN 256U
@@ -39,6 +43,9 @@ void APP_UART_Run(void)
     uint32_t i;
     uint32_t now = HAL_GetTick();
     uint32_t pause_request = app_uart_pause_request_ms;
+#if APP_WEEK5
+    uint32_t started_us = BSP_Micros();
+#endif
 
     if (pause_request != 0U) {
         app_uart_pause_request_ms = 0U;
@@ -73,6 +80,11 @@ void APP_UART_Run(void)
                                  &s_dispatcher);
         }
         processed += length;
+#if APP_WEEK5
+        /* Finish a removed chunk so bytes cannot silently disappear. Maximum
+         * overshoot is one 64-byte chunk, measured by the week5 supervisor. */
+        if ((uint32_t)(BSP_Micros() - started_us) >= 100U) break;
+#endif
     }
 
     FrameParser_Service(&s_parser, now);

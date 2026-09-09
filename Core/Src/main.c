@@ -36,6 +36,8 @@
 #include "tim.h"
 #include "week4_config.h"
 #include "app_week4.h"
+#include "week5_config.h"
+#include "app_week5.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -110,7 +112,9 @@ int main(void)
   APP_UART_Init();
   BSP_UART_TxInit();
   BSP_Sensors_Init();
-#if APP_WEEK4
+#if APP_WEEK5
+  APP_Week5_Init();
+#elif APP_WEEK4
   APP_Week4_Init();
 #else
   APP_Sensors_Init();
@@ -129,12 +133,16 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     APP_Task_Run();
-#if APP_WEEK4
+#if APP_WEEK5
+    APP_Week5_Run();
+#elif APP_WEEK4
     APP_Week4_Run();
 #else
     APP_Sensors_Run();
 #endif
+#if !APP_WEEK5
     APP_UART_Run();
+#endif
   }
   /* USER CODE END 3 */
 }

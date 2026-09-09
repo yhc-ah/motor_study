@@ -6,7 +6,7 @@ static uint8_t regs[128];
 static int fail;
 static int rd(void *ctx,uint8_t addr,uint8_t reg,uint8_t *out,uint16_t n) {
     (void)ctx; assert(addr==0x68 || addr==0x69);
-    if(fail) return -1;
+    if(fail) return fail<0?fail:-1;
     memcpy(out,regs+reg,n); if(reg==0x3a) regs[reg]=0; return 0;
 }
 static int wr(void *ctx,uint8_t addr,uint8_t reg,uint8_t val) {
@@ -38,5 +38,7 @@ int main(void) {
     regs[0x75]=0x70;Mpu6050_Init(&m,rd,wr,0,0);
     Mpu6050_Service(&m,0,0,&s);assert(!m.online && m.last_error==MPU_ID_ERROR);
     regs[0x75]=0x68; Mpu6050_Init(&m,rd,wr,0,0xffffff80U);boot(&m,0xffffff80U);
+    fail=-11;Mpu6050_Service(&m,250,250000,&s);
+    assert(m.last_error==-11 && !m.valid);
     puts("test_mpu6050: PASS");return 0;
 }

@@ -3,6 +3,7 @@
 #include "spi.h"
 #include "tim.h"
 #include "week3_config.h"
+#include "mpu6050.h"
 #include <string.h>
 static SensorBusStats stats;
 static volatile uint32_t ready_count,ready_us;
@@ -28,7 +29,13 @@ static int finish(HAL_StatusTypeDef rc,uint32_t start) {
     uint32_t dt=BSP_Micros()-start;
     HAL_GPIO_WritePin(GPIOC,GPIO_PIN_5,GPIO_PIN_RESET);stats.transactions++;
     if(dt>stats.max_transaction_us)stats.max_transaction_us=dt;
-    if(rc!=HAL_OK){stats.errors++;stats.last_hal_error=HAL_I2C_GetError(&hi2c1);return -1;}
+    if(rc!=HAL_OK){
+        stats.errors++;stats.last_hal_error=HAL_I2C_GetError(&hi2c1);
+        if(rc==HAL_BUSY)return MPU_BUS_BUSY;
+        if(rc==HAL_TIMEOUT)return MPU_BUS_TIMEOUT;
+        if(stats.last_hal_error&HAL_I2C_ERROR_AF)return MPU_BUS_NACK;
+        return MPU_BUS_ERROR;
+    }
     return 0;
 }
 int BSP_SensorRead(void *ctx,uint8_t a,uint8_t r,uint8_t *p,uint16_t n) {

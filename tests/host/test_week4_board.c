@@ -48,6 +48,10 @@ int main(void){W4AdcBlock b;const W4HardwareStats *s;unsigned i;
  assert(!W4HW_EncoderStart(1000,1,1,65534));
  for(i=0;i<4;i++){test_tim6.SR=TIM_SR_UIF;W4HW_GeneratorIRQ();test_tim8.CNT=(test_tim8.CNT+1)&65535;}
  micros+=10;W4HW_Run();s=W4HW_Stats();assert(!s->generator_active&&s->generator_steps==4&&s->encoder_position==4&&s->encoder_cnt==2);
+ assert(!W4HW_EncoderStart(100,180000,1,0));
+ for(i=0;i<720000;i++){test_tim6.SR=TIM_SR_UIF;W4HW_GeneratorIRQ();test_tim8.CNT=(test_tim8.CNT+1)&65535;micros+=2500;if(!(i%4))W4HW_Run();}
+ micros+=10;W4HW_Run();s=W4HW_Stats();assert(!s->generator_active&&s->generator_steps==720000&&s->encoder_position==720000);
+ assert(W4HW_EncoderStart(100,1000001,1,0)<0);
  assert(!W4HW_Pwm(10000,500,0,1));assert(test_tim4.ARR==99&&test_tim4.CCR1==50);
  assert(!W4HW_Pwm(10000,1000,1,1));assert(test_tim4.CCR1>test_tim4.ARR);
  assert(!W4HW_Pwm(10000,0,0,0));assert(!(test_tim4.CR1&TIM_CR1_CEN)&&!(test_gpiob.ODR&GPIO_PIN_6));

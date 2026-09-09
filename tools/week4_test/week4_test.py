@@ -183,7 +183,7 @@ def assess_record(tracker,final,seconds,pause_ms,injected):
 
 
 def encoder_run(client,directory,hz,cycles,direction,initial):
- if hz not in (100,1000) or not 1<=cycles<=100000 or direction not in (-1,1) or not 0<=initial<=65535:raise ValueError('invalid encoder parameters')
+ if hz not in (100,1000) or not 1<=cycles<=1000000 or direction not in (-1,1) or not 0<=initial<=65535:raise ValueError('invalid encoder parameters')
  directory.mkdir(parents=True,exist_ok=True);statuses=[];r=dict(hardware_verdict='NOT_ASSESSED',errors=[],expected_magnitude=cycles*4,requested_direction=direction);attempted=False;baseline={};final={}
  def snapshot():
   status=client.status();statuses.append(dict(pc_monotonic_ns=time.monotonic_ns(),**status));return status
@@ -223,7 +223,7 @@ def encoder_run(client,directory,hz,cycles,direction,initial):
 def record(client,directory,seconds,pause_ms=0,joint=False):
  seconds=duration(seconds)
  if pause_ms and not 1<=pause_ms<=1000:raise ValueError('pause-ms 1..1000')
- if joint and seconds>990:raise ValueError('joint duration <=990 s (finite generator limit)')
+ if joint and seconds>3600:raise ValueError('joint duration <=3600 s (finite generator limit)')
  directory.mkdir(parents=True,exist_ok=True)
  result={'hardware_verdict':'NOT_ASSESSED','errors':[]};tracker=None;pending=[];statuses=[];baseline={};final=None;start_attempted=False;joint_attempted=False;paused=False
  raw=(directory/'raw.bin').open('wb');client.raw=raw
@@ -326,7 +326,7 @@ def main(argv=None):
      if not 0<=a.duty<=1000:raise ValueError('duty 0..1000')
      r=c.command(0x22,struct.pack('<IHBB',a.hz,a.duty,int(a.center),a.mode))
     elif a.action=='encoder':
-     if not 1<=a.cycles<=100000 or not 0<=a.initial<=65535:raise ValueError('cycles 1..100000, initial 0..65535')
+     if not 1<=a.cycles<=1000000 or not 0<=a.initial<=65535:raise ValueError('cycles 1..1000000, initial 0..65535')
      r=encoder_run(c,a.out,a.hz,a.cycles,a.direction,a.initial)
     elif a.action=='record':r=record(c,a.out,a.seconds,a.pause_ms,a.joint)
     else:

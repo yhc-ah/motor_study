@@ -90,7 +90,7 @@ int APP_Week4_Command(const ParsedFrame *f){
     case 0x23:
         if(n!=16)break;
         hz=get32(p);cycles=get32(p+4);
-        if((hz!=100 && hz!=1000)||!cycles||cycles>100000||get32(p+12)>65535||
+        if((hz!=100 && hz!=1000)||!cycles||cycles>1000000||get32(p+12)>65535||
           (get32(p+8)!=1 && get32(p+8)!=0xffffffffU))break;
         rc=W4HW_EncoderStart(hz,cycles,(int32_t)get32(p+8),get32(p+12));break;
     case 0x24:if(!n){W4HW_EncoderStop();rc=0;}break;

@@ -10,6 +10,8 @@
 #include "app_sensors.h"
 #include "app_week4.h"
 #include "week4_config.h"
+#include "week5_config.h"
+#include "app_week5.h"
 #include "bsp_uart_tx.h"
 #endif
 
@@ -121,6 +123,9 @@ void CommandDispatcher_Handle(const ParsedFrame *frame, void *context)
     }
 #ifndef COMMAND_DISPATCH_HOST_TEST
 #if APP_WEEK4
+#if APP_WEEK5
+    if (APP_Week5_Command(frame)) { return; }
+#endif
     if (APP_Week4_Command(frame)) { return; }
 #else
     if (APP_Sensors_Command(frame)) { return; }

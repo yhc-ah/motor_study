@@ -1,0 +1,104 @@
+test_byte_ring: PASS
+test_crc16: PASS
+test_frame_parser: PASS
+test_command_dispatch: PASS
+test_crc_standard_vector (tests.host.test_uart_tool.UartToolTests.test_crc_standard_vector) ... ok
+test_embedded_header_and_glued_frames (tests.host.test_uart_tool.UartToolTests.test_embedded_header_and_glued_frames) ... ok
+test_fixed_seed_is_reproducible (tests.host.test_uart_tool.UartToolTests.test_fixed_seed_is_reproducible) ... ok
+test_invalid_length_resynchronizes (tests.host.test_uart_tool.UartToolTests.test_invalid_length_resynchronizes) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+SELF-TEST PASS
+All host tests passed.
+PASS: SPI NOR protocol, bounds, injected faults, 100 cooperative rounds (host model only)
+test_mpu6050: PASS
+test_tx_queue: PASS
+test_uart_tx: PASS
+test_app_sensors: PASS (host model)
+test_command_requires_matching_sequence_and_ack_payload (tests.host.test_sensor_tool.SensorToolTests.test_command_requires_matching_sequence_and_ack_payload) ... ok
+test_failed_start_preserves_evidence_and_stops_device (tests.host.test_sensor_tool.SensorToolTests.test_failed_start_preserves_evidence_and_stops_device) ... ok
+test_flash_reports_negative_ack_and_finite_polling (tests.host.test_sensor_tool.SensorToolTests.test_flash_reports_negative_ack_and_finite_polling) ... ok
+test_flash_requires_explicit_flag (tests.host.test_sensor_tool.SensorToolTests.test_flash_requires_explicit_flag) ... ok
+test_fragmentation_crc_noise_illegal_lengths_and_recovery (tests.host.test_sensor_tool.SensorToolTests.test_fragmentation_crc_noise_illegal_lengths_and_recovery) ... ok
+test_independent_validation_statistics_and_sixty_second_calibration (tests.host.test_sensor_tool.SensorToolTests.test_independent_validation_statistics_and_sixty_second_calibration) ... ok
+test_malformed_csv_and_invalid_cli_durations_are_rejected (tests.host.test_sensor_tool.SensorToolTests.test_malformed_csv_and_invalid_cli_durations_are_rejected) ... ok
+test_plausible_corrupt_length_does_not_hold_next_valid_frame (tests.host.test_sensor_tool.SensorToolTests.test_plausible_corrupt_length_does_not_hold_next_valid_frame) ... ok
+test_record_creates_evidence_verifies_stop_drains_and_never_starts_flash (tests.host.test_sensor_tool.SensorToolTests.test_record_creates_evidence_verifies_stop_drains_and_never_starts_flash) ... ok
+test_record_rate_does_not_count_duplicate_frames (tests.host.test_sensor_tool.SensorToolTests.test_record_rate_does_not_count_duplicate_frames) ... ok
+test_rejected_time_regression_does_not_double_count_sequence_gaps (tests.host.test_sensor_tool.SensorToolTests.test_rejected_time_regression_does_not_double_count_sequence_gaps) ... ok
+test_rejected_time_regression_does_not_double_count_sequence_wrap (tests.host.test_sensor_tool.SensorToolTests.test_rejected_time_regression_does_not_double_count_sequence_wrap) ... ok
+test_sequence_wrap_gaps_duplicate_out_of_order_and_time_wrap (tests.host.test_sensor_tool.SensorToolTests.test_sequence_wrap_gaps_duplicate_out_of_order_and_time_wrap) ... ok
+test_signed_sensor_fields_status_and_strict_payload_sizes (tests.host.test_sensor_tool.SensorToolTests.test_signed_sensor_fields_status_and_strict_payload_sizes) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.020s
+
+OK
+Week3 host validation passed; hardware acceptance is separate.
+Week4 signal math: 27255 checks, 0 failures
+test_week4_board: PASS (real BSP, simulated HAL/registers)
+test_week4_handover: PASS
+test_app_week4: PASS
+test_fault_requires_missing_samples_and_overwrite (tests.host.test_week4_tool.Week4AssessmentTests.test_fault_requires_missing_samples_and_overwrite) ... ok
+test_integrity_error_prevents_acquisition_pass (tests.host.test_week4_tool.Week4AssessmentTests.test_integrity_error_prevents_acquisition_pass) ... ok
+test_long_capture_checks_rate_and_coverage (tests.host.test_week4_tool.Week4AssessmentTests.test_long_capture_checks_rate_and_coverage) ... ok
+test_noise_statistics_exclude_same_settling_after_gap (tests.host.test_week4_tool.Week4AssessmentTests.test_noise_statistics_exclude_same_settling_after_gap) ... ok
+test_short_requested_capture_and_fault_never_pass_normal_acquisition (tests.host.test_week4_tool.Week4AssessmentTests.test_short_requested_capture_and_fault_never_pass_normal_acquisition) ... ok
+test_record_interleaved_start_and_stop_tail (tests.host.test_week4_tool.Week4IntegrationTests.test_record_interleaved_start_and_stop_tail) ... ok
+test_busy_baseline_not_stopped (tests.host.test_week4_tool.Week4ReviewRegressionTests.test_busy_baseline_not_stopped) ... ok
+test_empty_and_short_coverage_are_not_success (tests.host.test_week4_tool.Week4ReviewRegressionTests.test_empty_and_short_coverage_are_not_success) ... ok
+test_encoder_waits_and_saves_evidence (tests.host.test_week4_tool.Week4ReviewRegressionTests.test_encoder_waits_and_saves_evidence) ... ok
+test_fault_requires_injection_and_evidence (tests.host.test_week4_tool.Week4ReviewRegressionTests.test_fault_requires_injection_and_evidence) ... ok
+test_svg_keeps_gap_and_invalid_breaks (tests.host.test_week4_tool.Week4ReviewRegressionTests.test_svg_keeps_gap_and_invalid_breaks) ... ok
+test_bad_ack_payload_and_sequence (tests.host.test_week4_tool.Week4Tests.test_bad_ack_payload_and_sequence) ... ok
+test_duration (tests.host.test_week4_tool.Week4Tests.test_duration) ... ok
+test_filter_and_step (tests.host.test_week4_tool.Week4Tests.test_filter_and_step) ... ok
+test_fragment_crc_and_interleaving (tests.host.test_week4_tool.Week4Tests.test_fragment_crc_and_interleaving) ... ok
+test_gaps_duplicate_other_run_tail (tests.host.test_week4_tool.Week4Tests.test_gaps_duplicate_other_run_tail) ... ok
+test_malformed (tests.host.test_week4_tool.Week4Tests.test_malformed) ... ok
+test_record_failure_stops_and_preserves (tests.host.test_week4_tool.Week4Tests.test_record_failure_stops_and_preserves) ... ok
+test_sequence_wrap (tests.host.test_week4_tool.Week4Tests.test_sequence_wrap) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.660s
+
+OK
+Week4 host validation passed; physical acceptance requires measurements.
+week5 timing: wrap, absolute deadlines, skipped slots, 30min, profile PASS
+week5 journal: guarded prepare, bounded service, 180 readbacks, isolation, corruption PASS
+week5 supervisor: missing hardware rejected, fresh stream, timestamps, overload, prepare failure PASS
+week5 fixed-seed 10000-case C parser matrix: 5000 valid, zero invalid execution, recovery PASS
+test_ack_length (tests.host.test_week5_tool.Tests.test_ack_length) ... ok
+test_ack_sequence (tests.host.test_week5_tool.Tests.test_ack_sequence) ... ok
+test_adc_gap_tail_and_bounded (tests.host.test_week5_tool.Tests.test_adc_gap_tail_and_bounded) ... ok
+test_adc_rate_detects_half_speed (tests.host.test_week5_tool.Tests.test_adc_rate_detects_half_speed) ... ok
+test_cleanup_continues_bad_ack (tests.host.test_week5_tool.Tests.test_cleanup_continues_bad_ack) ... ok
+test_cli_baud_and_duration (tests.host.test_week5_tool.Tests.test_cli_baud_and_duration) ... ok
+test_duplicate_and_missing_tail (tests.host.test_week5_tool.Tests.test_duplicate_and_missing_tail) ... ok
+test_encoder_four_edges_per_cycle (tests.host.test_week5_tool.Tests.test_encoder_four_edges_per_cycle) ... ok
+test_existing_capture_not_overwritten (tests.host.test_week5_tool.Tests.test_existing_capture_not_overwritten) ... ok
+test_f411_extended_timing_and_signed_error (tests.host.test_week5_tool.Tests.test_f411_extended_timing_and_signed_error) ... ok
+test_f411_sync_discards_only_pre_capture_noise (tests.host.test_week5_tool.Tests.test_f411_sync_discards_only_pre_capture_noise) ... ok
+test_fault_evidence_requires_observation (tests.host.test_week5_tool.Tests.test_fault_evidence_requires_observation) ... ok
+test_fault_valid_imu (tests.host.test_week5_tool.Tests.test_fault_valid_imu) ... ok
+test_finish_current_frame_only (tests.host.test_week5_tool.Tests.test_finish_current_frame_only) ... ok
+test_journal_wait_for_verified_ready (tests.host.test_week5_tool.Tests.test_journal_wait_for_verified_ready) ... ok
+test_malformed_payload (tests.host.test_week5_tool.Tests.test_malformed_payload) ... ok
+test_profile_retained_to_sink (tests.host.test_week5_tool.Tests.test_profile_retained_to_sink) ... ok
+test_raw_full_run_coverage (tests.host.test_week5_tool.Tests.test_raw_full_run_coverage) ... ok
+test_signed_rejection (tests.host.test_week5_tool.Tests.test_signed_rejection) ... ok
+test_start_bad_ack_still_cleans_owned_resources (tests.host.test_week5_tool.Tests.test_start_bad_ack_still_cleans_owned_resources) ... ok
+test_status_exact_length (tests.host.test_week5_tool.Tests.test_status_exact_length) ... ok
+test_timestamp_regression (tests.host.test_week5_tool.Tests.test_timestamp_regression) ... ok
+test_assessment_rejects_bad_execution (tests.host.test_week5_flood.FloodTests.test_assessment_rejects_bad_execution) ... ok
+test_bad_frames_never_decode (tests.host.test_week5_flood.FloodTests.test_bad_frames_never_decode) ... ok
+test_wrap_counters (tests.host.test_week5_flood.FloodTests.test_wrap_counters) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 6.469s
+
+OK
+Week5 host checks passed. Physical acceptance is a separate gate.

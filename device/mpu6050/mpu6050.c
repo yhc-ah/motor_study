@@ -17,30 +17,35 @@ int Mpu6050_Service(Mpu6050 *m,uint32_t now,uint32_t us,MpuSample *s) {
     if(m->state==0) {
         m->address=0x68;rc=m->read(m->context,m->address,0x75,&id,1);
         if(rc) {m->address=0x69;rc=m->read(m->context,m->address,0x75,&id,1);}
-        if(rc)return error(m,now,MPU_BUS_ERROR);
+        if(rc)return error(m,now,rc<0?rc:MPU_BUS_ERROR);
         if(id!=0x68)return error(m,now,MPU_ID_ERROR);
-        if(m->write(m->context,m->address,0x6b,0x80))return error(m,now,MPU_BUS_ERROR);
+        rc=m->write(m->context,m->address,0x6b,0x80);
+        if(rc)return error(m,now,rc<0?rc:MPU_BUS_ERROR);
         m->state=1;m->deadline_ms=now+100U;return 0;
     }
     if(m->state==1) {
-        if(m->write(m->context,m->address,0x6b,1))return error(m,now,MPU_BUS_ERROR);
+        rc=m->write(m->context,m->address,0x6b,1);
+        if(rc)return error(m,now,rc<0?rc:MPU_BUS_ERROR);
         m->state=2;m->deadline_ms=now+100U;return 0;
     }
     if(m->state==2) {
         if(m->step<sizeof(config)/sizeof(config[0])) {
             uint8_t reg=config[m->step][0],value=config[m->step][1];
-            if(m->write(m->context,m->address,reg,value) ||
-               m->read(m->context,m->address,reg,&id,1))return error(m,now,MPU_BUS_ERROR);
+            rc=m->write(m->context,m->address,reg,value);
+            if(!rc)rc=m->read(m->context,m->address,reg,&id,1);
+            if(rc)return error(m,now,rc<0?rc:MPU_BUS_ERROR);
             if(id!=value)return error(m,now,MPU_CONFIG_ERROR);
             m->step++;return 0;
         }
-        if(m->read(m->context,m->address,0x6b,&id,1))return error(m,now,MPU_BUS_ERROR);
+        rc=m->read(m->context,m->address,0x6b,&id,1);
+        if(rc)return error(m,now,rc<0?rc:MPU_BUS_ERROR);
         if(id!=1)return error(m,now,MPU_CONFIG_ERROR);
         if(m->ever_online)m->recoveries++;
         m->ever_online=1;m->online=1;m->state=3;m->ready_since_ms=now;return 0;
     }
     /* One burst includes INT_STATUS and all seven values; no separate axis reads. */
-    if(m->read(m->context,m->address,0x3a,b,sizeof(b)))return error(m,now,MPU_BUS_ERROR);
+    rc=m->read(m->context,m->address,0x3a,b,sizeof(b));
+    if(rc)return error(m,now,rc<0?rc:MPU_BUS_ERROR);
     if(!(b[0]&1U)) {
         uint32_t since=m->valid?m->last_success_ms:m->ready_since_ms;
         if((uint32_t)(now-since)>100U)return error(m,now,MPU_STALE_ERROR);

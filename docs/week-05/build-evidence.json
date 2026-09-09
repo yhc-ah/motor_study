@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-09",
+  "compiler": "ARMCC 5.06 update7 build960",
+  "hardware": "NOT_RUN",
+  "f407": {
+    "sizes": {
+      "code": 27276,
+      "ro": 548,
+      "rw": 416,
+      "zi": 10296
+    },
+    "build": "Keil full rebuild: 0 errors, 0 warnings",
+    "hex_sha256": "d868ee023ad375bddb56a4dcff4d62f1a24e3ca56253793d24af2077013f3572"
+  },
+  "f411_c": {
+    "hex_sha256": "698ec5d2b8a44ed2458b00ded3480e8305bae0fa8127cf223392e5d0ddeb0e63",
+    "sizes": {
+      "code": 7486,
+      "ro": 482,
+      "rw": 44,
+      "zi": 3644
+    }
+  },
+  "f411_cpp": {
+    "hex_sha256": "493996d2614fdf1408e2b79d1755b1958970536df33fc1c5316cd1afaa18baca",
+    "sizes": {
+      "code": 7486,
+      "ro": 482,
+      "rw": 44,
+      "zi": 3644
+    }
+  }
+}

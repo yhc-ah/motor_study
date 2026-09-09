@@ -167,7 +167,7 @@ int W4HW_Pwm(uint32_t hz,uint16_t duty,uint8_t center,uint8_t enabled){
 }
 int W4HW_EncoderStart(uint32_t hz,uint32_t cycles,int32_t direction,uint32_t initial){
     uint32_t key;if(!initialized)return -3;if(generator_active)return -2;
-    if((hz!=100 && hz!=1000)||!cycles||cycles>100000||(direction!=1 && direction!=-1)||initial>65535)return -1;
+    if((hz!=100 && hz!=1000)||!cycles||cycles>1000000||(direction!=1 && direction!=-1)||initial>65535)return -1;
     TIM6->CR1=0;TIM6->DIER=0;
     /* Disconnect receiver while resetting simulator phase; no startup edge is counted. */
     TIM8->CR1&=~TIM_CR1_CEN;GPIOG->BSRR=(GPIO_PIN_2|GPIO_PIN_3)<<16;
